@@ -8,6 +8,8 @@ function App() {
     { id: 3, title: 'Note 3', description: 'Description 3', status: 'COMPLETE' },
   ]);
 
+  const [counter, setCounter] = useState(4); // for unique note IDs
+
   const handleStatusChange = (id, newStatus) => {
     setNotes(notes.map(note => 
       note.id === id ? { ...note, status: newStatus } : note
@@ -18,12 +20,23 @@ function App() {
     setNotes(notes.filter(note => note.id !== id));
   };
 
+  const handleAddNote = () => {
+    const newNote = {
+      id: counter,
+      title: `Note ${counter}`,
+      description: `Description ${counter}`,
+      status: 'UNDONE'
+    };
+    setNotes([newNote, ...notes]);
+    setCounter(counter + 1);
+  };
+
   return (
     <div className="app">
       <div className="navbar">
-      <div className="profile">👤</div>
-      git<div>Hello, User</div>
-        <button className="add">+</button>
+        <div className="profile">👤</div>
+        <div>Hello, User</div>
+        <button className="add" onClick={handleAddNote}>+</button>
       </div>
 
       <div className="notes">
@@ -33,7 +46,7 @@ function App() {
             <p>{note.description}</p>
             
             <label>
-              Status: 
+              Status:
               <select 
                 value={note.status} 
                 onChange={(e) => handleStatusChange(note.id, e.target.value)}
